@@ -18,7 +18,7 @@ app.use(clerkMiddleware());
 //api to listen to clerk webhooks//
 app.use('/api/clerk',clerkWebhooks);
 app.get('/', (req, res) => {
-  res.json({ message: 'API is working' });
+  res.send( 'API is working');
 });
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
