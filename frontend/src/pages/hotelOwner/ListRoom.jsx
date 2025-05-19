@@ -13,7 +13,8 @@ const ListRoom = () => {
   };
 
   return (
-    <div className="px-4 sm:px-6 lg:px-8 py-6">
+    <div cla
+    ssName="px-4 sm:px-6 lg:px-8 py-6">
       <Title
         align="left"
         font="outfit"

@@ -4,7 +4,7 @@ import { assets } from '../assets/assets';
 
 const HotelCard = ({ room, index }) => {
   return (
-    <div className="bg-white ">
+    <div className="bg-white">
       <Link
         className="relative w-[360px] sm:w-[400px] rounded-xl overflow-hidden bg-white text-gray-500/90 shadow-md"
         to={`/rooms/${room._id}`}
