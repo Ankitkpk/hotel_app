@@ -1,6 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser'; 
-import cors from 'cors'; 
+//import cors from 'cors'; 
 import connectDB from './configs/db.js'
 import { config } from 'dotenv'; 
 import { clerkMiddleware } from '@clerk/express'
@@ -10,7 +10,7 @@ import clerkWebhooks from './controllers/ClerkWebhooks.js';
 config();
 const app = express();
 app.use(bodyParser.json()); 
-app.use(cors()); 
+//app.use(cors()); 
  connectDB();
 //conectcoudinary();
 const PORT = process.env.PORT || 3000; 
