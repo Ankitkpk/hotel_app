@@ -2,6 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "server": "nodemon server.js",
     "start": "node server.js"
@@ -11,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@clerk/express": "^1.4.19"
+    "@clerk/express": "^1.4.19",
+    "svix": "^1.65.0"
   }
 }
