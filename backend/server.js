@@ -17,9 +17,9 @@ const PORT = process.env.PORT || 3000;
 app.use(clerkMiddleware());
 //api to listen to clerk webhooks//
 app.use('/api/clerk',clerkWebhooks);
-app.use('/',(req,res)=>{
- res.json({message:'Api is working'})
-})
+app.get('/', (req, res) => {
+  res.json({ message: 'API is working' });
+});
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
