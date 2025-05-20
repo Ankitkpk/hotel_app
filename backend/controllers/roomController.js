@@ -1,8 +1,7 @@
 //API TO CREATE A NEW ROOM //
 import Hotel from '../models/Hotel.js';
 import Room from '../models/Room.js'; 
-import uploadImageOnCloudinary from '../utils/cloudinary.js';
-
+import uploadImageOnCloudinary from '../utile/cloudinary.js';
 
 export const createRoom = async (req, res) => {
   try {
