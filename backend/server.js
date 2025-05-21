@@ -1,43 +1,47 @@
 import express from 'express';
-import bodyParser from 'body-parser'; 
-import cors from 'cors'; 
-import connectDB from './configs/db.js';
+import cors from 'cors';
 import { config } from 'dotenv';
+import connectDB from './configs/db.js';
 import { clerkMiddleware } from '@clerk/express';
 import clerkWebhooks from './controllers/ClerkWebhooks.js';
 import hotelRoutes from './routes/hotelRoutes.js';
 import roomRoutes from './routes/roomRoutes.js';
 import bookingRoutes from './routes/bookingRoutes.js';
-import userRoutes from './routes/userRoutes.js'; // ✅ Corrected import
+import userRoutes from './routes/userRoutes.js';
 
 config(); // Load .env
 
 const app = express();
 
-// Middleware
-app.use(express.json()); 
+// CORS setup
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
-    credentials: true,
+  origin: process.env.CORS_ORIGIN,
+  credentials: true,
 }));
 
 connectDB();
 
+// Clerk auth middleware
 app.use(clerkMiddleware());
 
-// Routes
-app.use('/api/clerk', clerkWebhooks);
-app.use('/api/user', userRoutes);      // ✅ /api/user/getUser
-app.use('/api/hotels', hotelRoutes);   // ✅ /api/hotels/...
-app.use('/api/room', roomRoutes);      // ✅ /api/room/...
-app.use('/api/booking', bookingRoutes); // ✅ /api/booking/...
+app.post('/api/clerk', express.raw({ type: 'application/json' }), (req, res, next) => {
+  console.log('⚡️ /api/clerk endpoint HIT');
+  next();
+}, clerkWebhooks);
 
-// Test Route
+app.use(express.json());
+
+// Normal JSON-based routes
+app.use('/api/user', userRoutes);
+app.use('/api/hotels', hotelRoutes);
+app.use('/api/room', roomRoutes);
+app.use('/api/booking', bookingRoutes);
+
+// Default test route
 app.get('/', (req, res) => {
   res.send('API is working');
 });
 
-// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
