@@ -2,7 +2,7 @@
 
 export const getUserData = async (req, res) => {
   try {
-    const { role, recentSearchedCities } = req.user;
+    const { role , recentSearchedCities } = req.user;
 
     res.status(200).json({
       success: true,

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { assets } from '../assets/assets';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useClerk, UserButton, useUser } from '@clerk/clerk-react';
+import { Link, useLocation} from 'react-router-dom';
+import { useClerk, UserButton} from '@clerk/clerk-react';
+import { useContext } from 'react';
+import { AppContext } from '../context/appContext';
 
 const BookIcon = () => (
   <svg className="w-4 h-4 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -20,9 +22,8 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { openSignIn } = useClerk();
-  const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useUser();
+  const { user,navigate,setShowHotelReg,isOwner} = useContext(AppContext);
 
   useEffect(() => {
     setIsScrolled(location.pathname !== '/');
@@ -51,8 +52,8 @@ const Navbar = () => {
           </a>
         ))}
         {user && (
-          <button onClick={() => navigate('owner')} className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}>
-            Dashboard
+          <button onClick={() =>{isOwner ? navigate('owner'): setShowHotelReg(true)}} className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}>
+            {isOwner ? 'Dashboard':'List Your Hotel'}
           </button>
         )}
       </div>
@@ -103,8 +104,9 @@ const Navbar = () => {
         ))}
 
         {user && (
-          <button onClick={() => navigate('owner')} className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all">
-            Dashboard
+          <button onClick={() => { isOwner ? navigate('owner') : setShowHotelReg(true);
+        }} className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all">
+            {isOwner ? 'Dashboard':'List Your Hotel'}
           </button>
         )}
 
