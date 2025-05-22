@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import { assets, facilityIcons, roomCommonData, roomsDummyData } from '../assets/assets';
 import StartRattig from '../components/StartRattig';
 
-const RoomDetails = () => {
+  const RoomDetails = () => {
   const { id } = useParams();
   const [room, setRoom] = useState(null);
   const [mainimage, setMainImage] = useState(null);

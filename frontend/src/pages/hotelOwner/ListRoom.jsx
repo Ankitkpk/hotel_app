@@ -1,20 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Title from '../../components/Title';
-import { roomsDummyData } from '../../assets/assets';
+import { AppContext } from '../../context/appContext';
+import toast from 'react-hot-toast';
 
 const ListRoom = () => {
-  const [rooms, setRooms] = useState(roomsDummyData);
+  const [rooms, setRooms] = useState([]);
+  const { axios, user, getToken } = useContext(AppContext);
 
-  // Toggle room availability
-  const handleToggle = (index) => {
-    const updatedRooms = [...rooms];
-    updatedRooms[index].isAvailable = !updatedRooms[index].isAvailable;
-    setRooms(updatedRooms);
+  const fetchRooms = async () => {
+    try {
+      const token = await getToken();
+      const response = await axios.get('/api/rooms/owner', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setRooms(response.data.rooms);
+      toast.success('Rooms fetched successfully');
+    } catch (error) {
+      console.error('Failed to fetch rooms:', error);
+      toast.error(error.response?.data?.message || 'Failed to fetch rooms');
+    }
   };
 
+  // Toggle-room-availability
+  const ToggleRoom = async (roomId) => {
+    try {
+      console.log(roomId);
+      const token = await getToken();
+      const { data } = await axios.post(
+        '/api/rooms/toggle-Availability',
+        { roomId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        toast.success(data.message || 'Room availability updated');
+        fetchRooms();
+      } else {
+        toast.error(data.message || 'Something went wrong');
+      }
+    } catch (error) {
+      console.error('Toggle availability error:', error);
+      toast.error(error.response?.data?.message || 'Failed to toggle availability');
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchRooms();
+    }
+  }, [user]);
+
   return (
-    <div cla
-    ssName="px-4 sm:px-6 lg:px-8 py-6">
+    <div className="px-4 sm:px-6 lg:px-8 py-6">
       <Title
         align="left"
         font="outfit"
@@ -33,8 +76,8 @@ const ListRoom = () => {
             </tr>
           </thead>
           <tbody className="text-sm">
-            {rooms.map((item, index) => (
-              <tr key={index} className="border-t hover:bg-gray-50 transition">
+            {rooms.map((item) => (
+              <tr key={item._id} className="border-t hover:bg-gray-50 transition">
                 <td className="py-3 px-4">{item.roomType}</td>
                 <td className="py-3 px-4">{item.amenities.join(', ')}</td>
                 <td className="py-3 px-4">₹{item.pricePerNight}</td>
@@ -44,7 +87,7 @@ const ListRoom = () => {
                       type="checkbox"
                       className="sr-only peer"
                       checked={item.isAvailable}
-                      onChange={() => handleToggle(index)}
+                      onChange={() => ToggleRoom(item._id)}
                     />
                     <div className="w-12 h-7 bg-slate-300 rounded-full peer-checked:bg-blue-600 relative transition-colors duration-200">
                       <span className="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-5"></span>

@@ -21,6 +21,7 @@ export const createRoom = async (req, res) => {
         message: 'Hotel not found for the authenticated user.',
       });
     }
+    console.log(req.files);
    if (!req.files || req.files.length === 0) {
       return res.status(400).json({
         success: false,
@@ -92,15 +93,17 @@ export const getAllRooms = async (req, res) => {
 export const getOwnerRoom = async (req, res) => {
   try {
     // Get hotel data by owner ID
-    const hotelData = await Hotel({ owner: req.auth.userId });
-
+    const hotelData = await Hotel.findOne({ owner: req.auth.userId });
+    
     if (!hotelData) {
       return res.status(404).json({
         success: false,
         message: 'Hotel not found for this user.',
       });
     }
+
     const rooms = await Room.find({ hotel: hotelData._id.toString()}).populate('hotel')
+
     if (rooms.length === 0) {
       return res.status(404).json({
         success: false,

@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/check-availability',checkAvailabilityApi);
 router.post('/book',protect,createBookings);
 router.get('/user',protect,userBookings);
-router.get('/book',protect,getHotelBooking);
+router.get('/getbookings',protect,getHotelBooking);
 
 
 export default router;

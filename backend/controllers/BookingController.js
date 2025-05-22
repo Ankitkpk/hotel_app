@@ -1,5 +1,5 @@
 import Booking from '../models/Booking.js';
-
+import Hotel from '../models/Hotel.js';
 
 //function to check availability of room//
 const checkAvailability = async ({ checkInDate, checkOutDate, room }) => {
@@ -143,6 +143,7 @@ export const userBookings = async (req, res) => {
 export const getHotelBooking = async (req, res) => {
   try {
     // Find the single hotel owned by the logged-in user
+    console.log(req.auth._id);
     const hotel = await Hotel.findOne({ owner: req.auth._id });
 
     if (!hotel) {

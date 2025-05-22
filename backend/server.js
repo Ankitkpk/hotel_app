@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { config } from 'dotenv';
+import dotenv from 'dotenv';
 import connectDB from './configs/db.js';
 import { clerkMiddleware } from '@clerk/express';
 import clerkWebhooks from './controllers/ClerkWebhooks.js';
@@ -9,13 +9,13 @@ import roomRoutes from './routes/roomRoutes.js';
 import bookingRoutes from './routes/bookingRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 
-config(); // Load .env
+dotenv.config();
 
 const app = express();
 
 // CORS setup
 app.use(cors({
-  origin: process.env.CORS_ORIGIN,
+  origin:process.env.CORS_ORIGIN,
   credentials: true,
 }));
 
@@ -31,10 +31,9 @@ app.post('/api/clerk', express.raw({ type: 'application/json' }), (req, res, nex
 
 app.use(express.json());
 
-// Normal JSON-based routes
 app.use('/api/user', userRoutes);
 app.use('/api/hotels', hotelRoutes);
-app.use('/api/room', roomRoutes);
+app.use('/api/rooms', roomRoutes);
 app.use('/api/booking', bookingRoutes);
 
 // Default test route

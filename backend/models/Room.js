@@ -16,7 +16,7 @@ const roomSchema = new mongoose.Schema(
       required: true
     },
     amenities: {
-      type: String,
+      type:[String],
       required: true
     },
     images: {
@@ -24,7 +24,7 @@ const roomSchema = new mongoose.Schema(
     },
     isAvailable: {
       type: Boolean,
-      default:false
+      default:true
     }
   },
   {
