@@ -5,7 +5,7 @@ import protect from '../middleware/authmiddleware.js';
 const router = express.Router();
 
 router.post('/' , upload.array('images',4),protect,createRoom);
-router.get('/' ,getAllRooms);
+router.get('/getAllrooms' ,getAllRooms);
 router.get('/owner' , getOwnerRoom);
 router.post('/toggle-Availability' ,toggleRoomAvailability);
 

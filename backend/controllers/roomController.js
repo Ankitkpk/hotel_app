@@ -21,7 +21,7 @@ export const createRoom = async (req, res) => {
         message: 'Hotel not found for the authenticated user.',
       });
     }
-    console.log(req.files);
+
    if (!req.files || req.files.length === 0) {
       return res.status(400).json({
         success: false,
@@ -74,7 +74,7 @@ export const getAllRooms = async (req, res) => {
         }
       })
       .sort({ createdAt: -1 });
-
+    console.log(`the avaialable roomdata is ${rooms}`);
     res.status(200).json({
       success: true,
       rooms

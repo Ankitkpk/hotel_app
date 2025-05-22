@@ -17,6 +17,21 @@ const AppContextProvider = ({ children }) => {
   const [isOwner, setIsOwner] = useState(false);
   const [showHotelReg, setShowHotelReg] = useState(false);
   const [searchedCities, SetSearchedCities] = useState([]);
+  const [roomdata, SetRoomData] = useState([]);
+
+ const fetchRoomData = async () => {
+  try {
+    const { data } = await axios.get('/api/rooms/getAllrooms');
+    if (data.success === true) {
+       SetRoomData(data.rooms); 
+    } else {
+      toast.error('Failed to fetch room data.');
+    }
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
+
 
   const syncUser = async () => {
     if (!user) return;
@@ -75,7 +90,12 @@ const AppContextProvider = ({ children }) => {
     handleUserSetup();
   }, [user]);
 
+ useEffect(() => {
+  fetchRoomData();
+}, []);
+
   const value = {
+    roomdata,
     currency,
     navigate,
     user,
