@@ -24,6 +24,6 @@ router.post('/sync', async (req, res) => {
   }
 });
 
-router.post('/storeRecentSearchcities',protect,storeRecentSearchcities)
+router.post('/SetSearchedCities',protect,storeRecentSearchcities)
 
 export default router;

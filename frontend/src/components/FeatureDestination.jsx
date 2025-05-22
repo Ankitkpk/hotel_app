@@ -6,9 +6,9 @@ import { useContext } from 'react';
 import { AppContext } from '../context/appContext';
 
 const FeatureDestination = () => {
-  const {roomdata}=useContext(AppContext);
-  const navigate = useNavigate();
-  console.log(roomdata);
+  const {roomdata,navidate}=useContext(AppContext);
+  
+
 
   return roomdata.length > 0 && (
     <div className="flex flex-col items-center px-6 md:px-16 lg:px-25 bg-slate-100 py-20">
