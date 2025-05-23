@@ -74,7 +74,6 @@ export const getAllRooms = async (req, res) => {
         }
       })
       .sort({ createdAt: -1 });
-    console.log(`the avaialable roomdata is ${rooms}`);
     res.status(200).json({
       success: true,
       rooms

@@ -1,6 +1,7 @@
+import transporter from '../configs/nodemailer.js';
 import Booking from '../models/Booking.js';
 import Hotel from '../models/Hotel.js';
-
+import Room from '../models/Room.js';
 //function to check availability of room//
 const checkAvailability = async ({ checkInDate, checkOutDate, room }) => {
   try {
@@ -98,7 +99,27 @@ export const createBookings = async (req, res) => {
       guests: +guests,
       totalPrice,
     });
-
+     const mailOptions={
+      from:process.env.SMTP_EMAIL,
+      to:req.user.email,
+      subject:'Hotel Booking details',
+      html: `
+      <h2>Your Booking Details</h2> 
+      <p>Dear ${req.user.name},</p>
+      <p>Thank you for booking with us! Below are your booking details:</p>
+      <ul>
+      <li><strong>Booking Id:</strong> ${newBooking._id}</li>
+      <li><strong>Hotel Name:</strong> ${roomData.hotel.name}</li>
+      <li><strong>Location:</strong> ${roomData.hotel.address}</li>
+      <li><strong>Check-in:</strong> ${new Date(checkInDate).toLocaleDateString()}</li>
+      <li><strong>Check-out:</strong> ${new Date(checkOutDate).toLocaleDateString()}</li>
+      <li><strong>Amount:</strong> $${totalPrice}</li>
+      <p>we look forward to welcomming you</p>
+      <p>if you need chnages feel free to contact use</p>
+     </ul>
+     `,
+     }
+     await transporter.sendMail(mailOptions);
     return res.status(201).json({
       message: 'Booking created successfully',
       booking: newBooking,
@@ -143,9 +164,7 @@ export const userBookings = async (req, res) => {
 export const getHotelBooking = async (req, res) => {
   try {
     // Find the single hotel owned by the logged-in user
-    console.log(req.auth._id);
-    const hotel = await Hotel.findOne({ owner: req.auth._id });
-
+    const hotel = await Hotel.findOne({ owner:req.user._id });
     if (!hotel) {
       return res.status(404).json({
         success: false,
@@ -159,14 +178,13 @@ export const getHotelBooking = async (req, res) => {
       .populate('room')
       .populate('hotel')
       .sort({ createdAt: -1 });
-     console.log(bookings);
     const totalBookings = bookings.length;
     const totalRevenue = bookings.reduce((acc, booking) => acc + booking.totalPrice, 0);
-
+   console.log(`the booking is ${bookings}`);
     return res.status(200).json({
       success: true,
       message: 'Bookings fetched successfully',
-       totalBookings,
+      totalBookings,
       totalRevenue,
       bookings,
     });
