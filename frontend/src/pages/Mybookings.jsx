@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Title from '../components/Title';
 import { assets } from '../assets/assets';
-import { AppContext } from '../context/appContext';
+import { AppContext } from '../context/AppContext';
 import toast from 'react-hot-toast';
 
 const MyBookings = () => {

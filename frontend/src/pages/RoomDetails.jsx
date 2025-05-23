@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { assets, facilityIcons, roomCommonData } from '../assets/assets';
-import { AppContext } from '../context/appContext';
+import { AppContext } from '../context/AppContext';
 import StarRating from '../components/StartRattig';
 
 const RoomDetails = () => {

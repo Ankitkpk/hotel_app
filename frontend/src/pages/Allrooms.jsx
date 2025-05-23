@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useContext } from 'react';
 import { assets, facilityIcons } from '../assets/assets';
 import { useSearchParams } from 'react-router-dom';
-import { AppContext } from '../context/appContext';
+import { AppContext } from '../context/AppContext';
 import StartRattig from '../components/StartRattig';
 
 const CheckBox = ({ label, selected = false, onChange = () => {} }) => (

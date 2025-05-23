@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Title from '../../components/Title';
-import { AppContext } from '../../context/appContext';
+import { AppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
 
 const ListRoom = () => {

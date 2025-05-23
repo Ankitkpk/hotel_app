@@ -2,7 +2,7 @@ import React from 'react'
 import Navbar from './Navbar' 
 import SideBar from './SideBar'
 import { Outlet } from 'react-router'
-import { AppContext } from '../../context/appContext'
+import { AppContext } from '../../context/AppContext'
 import { useContext } from 'react'
 import { useEffect } from 'react'
 

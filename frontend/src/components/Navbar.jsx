@@ -3,7 +3,7 @@ import { assets } from '../assets/assets';
 import { Link, useLocation} from 'react-router-dom';
 import { useClerk, UserButton} from '@clerk/clerk-react';
 import { useContext } from 'react';
-import { AppContext } from '../context/appContext';
+import { AppContext } from '../context/AppContext';
 
 const BookIcon = () => (
   <svg className="w-4 h-4 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

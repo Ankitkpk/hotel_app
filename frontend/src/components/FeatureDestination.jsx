@@ -3,7 +3,7 @@ import HotelCard from './HotelCard';
 import Title from './Title';
 import { useNavigate } from 'react-router';
 import { useContext } from 'react';
-import { AppContext } from '../context/appContext';
+import { AppContext } from '../context/AppContext';
 
 const FeatureDestination = () => {
   const {roomdata,navidate}=useContext(AppContext);
