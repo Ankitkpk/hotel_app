@@ -99,6 +99,7 @@ export const createBookings = async (req, res) => {
       guests: +guests,
       totalPrice,
     });
+    console.log(req.user.email);
      const mailOptions={
       from:process.env.SMTP_EMAIL,
       to:req.user.email,
@@ -180,7 +181,6 @@ export const getHotelBooking = async (req, res) => {
       .sort({ createdAt: -1 });
     const totalBookings = bookings.length;
     const totalRevenue = bookings.reduce((acc, booking) => acc + booking.totalPrice, 0);
-   console.log(`the booking is ${bookings}`);
     return res.status(200).json({
       success: true,
       message: 'Bookings fetched successfully',

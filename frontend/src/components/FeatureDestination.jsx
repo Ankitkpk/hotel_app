@@ -8,7 +8,7 @@ import { AppContext } from '../context/appContext';
 const FeatureDestination = () => {
   const {roomdata,navidate}=useContext(AppContext);
   
-
+  console.log(roomdata);
 
   return roomdata.length > 0 && (
     <div className="flex flex-col items-center px-6 md:px-16 lg:px-25 bg-slate-100 py-20">
@@ -19,9 +19,9 @@ const FeatureDestination = () => {
       
       {/* Center hotel cards on small screens */}
       <div className="flex flex-wrap items-center justify-center md:justify-between gap-14 mt-20 mb-3">
-        {roomdata.slice(0, 4).map((room, index) => (
+        { roomdata.slice(0, 4).map((room, index) => (
           <HotelCard key={room._id} room={room} index={index} />
-        ))}
+        )) }
       </div>
 
       <button

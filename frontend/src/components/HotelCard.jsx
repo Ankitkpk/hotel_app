@@ -26,7 +26,7 @@ const HotelCard = ({ room, index }) => {
         <div className="p-5">
           <div className="flex items-center justify-between mb-3">
             <p className="font-playfair text-2xl font-semibold text-gray-800">
-              {room.hotel.name}
+              {room.hotel.name || ''}
             </p>
             <div className="flex items-center gap-1 text-base text-yellow-500">
               <img src={assets.starIconFilled} alt="star-icon" className="h-5" />
@@ -36,7 +36,7 @@ const HotelCard = ({ room, index }) => {
 
           <div className="flex items-center gap-2 text-base text-gray-600 mb-4">
             <img src={assets.locationIcon} alt="location-icon" className="h-4 w-4" />
-            <span>{room.hotel.address}</span>
+            <span>{room.hotel.address || ''}</span>
           </div>
 
           <div className="flex items-center justify-between">
