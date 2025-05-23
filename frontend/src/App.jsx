@@ -15,6 +15,7 @@ import Addroom from './pages/hotelOwner/Addroom.jsx';
 import { AppContext } from './context/AppContext.jsx';
 import { Toaster} from 'react-hot-toast';
 import { useContext } from 'react';
+import Loader from './components/Loader.jsx';
 
 
 
@@ -33,6 +34,7 @@ function AppContent() {
       <Route path="/rooms" element={<Allrooms/>} />
       <Route path="/rooms/:id" element={<RoomDetails/>}/>
       <Route path="/my-booking" element={<Mybookings/>}  />
+       <Route path="/loader/:nexturl" element={<Loader/>}  />
       <Route path="/owner" element={<Layout/>}>
      <Route index element={<Dashboard/>} />
      <Route path="add-room" element={<Addroom/>}/>

@@ -30,7 +30,31 @@ const MyBookings = () => {
       toast.error('Something went wrong while fetching bookings.');
     }
   };
+//handle bookings//
+const handleBookingspayment = async (bookingId) => {
+  try {
+    const token = await getToken();
 
+    const { data } = await axios.post(
+      '/api/booking/stripe-payment',
+      { bookingId },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if(data.success){
+      window.location.href=data.url
+    }else
+    {
+       toast.error(data.message);
+    }
+  } catch (error) {
+    toast.error(error.message);
+    console.error("Error creating Stripe payment:", error);
+  }
+};
   useEffect(() => {
     if (user) {
       fetchMyBookings();
@@ -127,7 +151,7 @@ const MyBookings = () => {
                   </p>
                 </div>
                 {!booking.isPaid && (
-                  <button className="bg-black text-white rounded-full px-5 py-2 hover:bg-gray-800 transition-all">
+                  <button onClick={()=>handleBookingspayment(booking._id)} className="bg-black text-white rounded-full px-5 py-2 hover:bg-gray-800 transition-all">
                     Pay Now
                   </button>
                 )}
