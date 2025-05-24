@@ -51,12 +51,16 @@ const Navbar = () => {
             <div className={`${isScrolled ? "bg-gray-700" : "bg-white"} h-0.5 w-0 group-hover:w-full transition-all duration-300`} />
           </a>
         ))}
-        {user && (
-          <button onClick={() => {  setShowHotelReg(true);
-        }} className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}>
-            {isOwner?'Dashboard': ' List Your Hotel' }
-          </button>
-        )}
+       {user && (
+        <button
+       onClick={() => {
+       isOwner ? navigate('/owner') : setShowHotelReg(true);
+      }}
+     className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}
+      >
+     {isOwner ? 'Dashboard' : 'List Your Hotel'}
+     </button>
+     )}
       </div>
 
       {/* Desktop Right */}
@@ -105,11 +109,15 @@ const Navbar = () => {
         ))}
 
         {user && (
-          <button onClick={() => { setShowHotelReg(true);
-        }} className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all">
-           {isOwner?'Dashboard': ' List Your Hotel' }
-          </button>
-        )}
+        <button
+       onClick={() => {
+        isOwner ? navigate('/owner') : setShowHotelReg(true);
+        }}
+       className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}
+        >
+        {isOwner ? 'Dashboard' : 'List Your Hotel'}
+      </button>
+         )}
 
         {!user && (
           <button onClick={() => openSignIn()} className="bg-black text-white px-8 py-2.5 rounded-full transition-all duration-500">
