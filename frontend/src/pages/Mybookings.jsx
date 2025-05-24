@@ -151,7 +151,7 @@ const handleBookingspayment = async (bookingId) => {
                   </p>
                 </div>
                 {!booking.isPaid && (
-                  <button onClick={()=>handleBookingspayment(booking._id)} className="bg-black text-white rounded-full px-5 py-2 hover:bg-gray-800 transition-all">
+                  <button onClick={()=>handleBookingspayment(booking._id)} className="bg-gray-300 text-white rounded-full px-5 py-2 hover:bg-gray-800 transition-all">
                     Pay Now
                   </button>
                 )}

@@ -8,6 +8,7 @@ import hotelRoutes from './routes/hotelRoutes.js';
 import roomRoutes from './routes/roomRoutes.js';
 import bookingRoutes from './routes/bookingRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import { stripeWebhooks } from './controllers/stripeWebhook.js';
 
 dotenv.config();
 
@@ -20,7 +21,8 @@ app.use(cors({
 }));
 
 connectDB();
-
+//stripe webhook//
+app.post('/api/stripe', express.raw({ type: 'application/json' }),stripeWebhooks);
 // Clerk auth middleware
 app.use(clerkMiddleware());
 
