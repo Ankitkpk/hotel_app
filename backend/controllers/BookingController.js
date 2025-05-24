@@ -199,16 +199,22 @@ export const getHotelBooking = async (req, res) => {
   }
 };
 
+
+
+
 export const stripePayment = async (req, res) => {
   const { bookingId } = req.body;
 
   try {
     // Fetch booking details
     const booking = await Booking.findById(bookingId);
+   
     if (!booking) {
       return res.status(404).json({ success: false, message: 'Booking not found' });
     }
-
+     booking.isPaid = !booking.isPaid;
+     booking.status = 'completed'
+     booking.save();
     // Fetch room and associated hotel
     const roomData = await Room.findById(booking.room).populate('hotel');
     if (!roomData || !roomData.hotel) {
@@ -238,12 +244,11 @@ export const stripePayment = async (req, res) => {
       line_items,
       success_url: `${origin}/loader/my-booking`,
       cancel_url: `${origin}/my-booking`,
-      mode:"payment",
+      mode: "payment",
       metadata: {
         bookingId,
       },
     });
-
     res.json({ success: true, url: session.url });
   } catch (error) {
     console.error("Stripe payment error:", error);
