@@ -69,7 +69,7 @@ const Navbar = () => {
         {user ? (
           <UserButton>
             <UserButton.MenuItems>
-              <UserButton.Action label="My-bookings" labelIcon={<BookIcon />} onClick={() => navigate('/my-bookings')} />
+              <UserButton.Action label="My-bookings" labelIcon={<BookIcon />} onClick={() => navigate('/my-booking')} />
             </UserButton.MenuItems>
           </UserButton>
         ) : (
@@ -84,7 +84,7 @@ const Navbar = () => {
         {user && (
           <UserButton>
             <UserButton.MenuItems>
-              <UserButton.Action label="My-bookings" labelIcon={<BookIcon />} onClick={() => navigate('/my-bookings')} />
+              <UserButton.Action label="My-bookings" labelIcon={<BookIcon />} onClick={() =>navigate('/my-booking')} />
             </UserButton.MenuItems>
           </UserButton>
         )}

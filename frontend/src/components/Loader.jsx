@@ -18,7 +18,7 @@ const Loader = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen gap-4">
-      <div className="animate-spin h-24 w-24 border-4 border-gray-300 border-t-primary rounded-full" />
+      <div className="animate-spin h-24 w-24 border-4 border-gray-300 border-t-blue-500 rounded-full" />
       <p className="text-gray-500 text-lg">Redirecting you, please wait...</p>
     </div>
   );
