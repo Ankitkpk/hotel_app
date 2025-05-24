@@ -52,9 +52,9 @@ const Navbar = () => {
           </a>
         ))}
         {user && (
-          <button onClick={() => { setShowHotelReg(true);
+          <button onClick={() => {  setShowHotelReg(true);
         }} className={`border px-4 py-1 text-sm font-light rounded-full cursor-pointer ${isScrolled ? 'text-black' : 'text-white'} transition-all`}>
-            List Your Hotel
+            {isOwner?'Dashboard': ' List Your Hotel' }
           </button>
         )}
       </div>
@@ -107,7 +107,7 @@ const Navbar = () => {
         {user && (
           <button onClick={() => { setShowHotelReg(true);
         }} className="border px-4 py-1 text-sm font-light rounded-full cursor-pointer transition-all">
-            List Your Hotel
+           {isOwner?'Dashboard': ' List Your Hotel' }
           </button>
         )}
 
