@@ -7,10 +7,15 @@ import toast from 'react-hot-toast';
 const MyBookings = () => {
   const { getToken, axios, user } = useContext(AppContext);
   const [bookings, setBookings] = useState([]);
+<<<<<<< HEAD
   const [loading, setLoading] = useState(false);
 
   const fetchMyBookings = async () => {
     setLoading(true);
+=======
+
+  const fetchMyBookings = async () => {
+>>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
     try {
       const token = await getToken();
       const response = await axios.get('/api/booking/getbookings', {
@@ -18,8 +23,13 @@ const MyBookings = () => {
           Authorization: `Bearer ${token}`,
         },
       });
+<<<<<<< HEAD
 
       console.log('booking data response is', response);
+=======
+      
+      console.log(`booking data response is ${response}`);
+>>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
 
       if (response.data?.success) {
         setBookings(response.data.bookings || []);
@@ -30,6 +40,7 @@ const MyBookings = () => {
     } catch (error) {
       console.error('Fetch Bookings Error:', error);
       toast.error('Something went wrong while fetching bookings.');
+<<<<<<< HEAD
     } finally {
       setLoading(false);
     }
@@ -60,12 +71,42 @@ const MyBookings = () => {
     }
   };
 
+=======
+    }
+  };
+//handle bookings//
+const handleBookingspayment = async (bookingId) => {
+  try {
+    const token = await getToken();
+
+    const { data } = await axios.post(
+      '/api/booking/stripe-payment',
+      { bookingId },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if(data.success){
+      window.location.href=data.url
+    }else
+    {
+       toast.error(data.message);
+    }
+  } catch (error) {
+    toast.error(error.message);
+    console.error("Error creating Stripe payment:", error);
+  }
+};
+>>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
   useEffect(() => {
     if (user) {
       fetchMyBookings();
     }
   }, [user]);
 
+<<<<<<< HEAD
   const formatDate = (dateStr) =>
     dateStr
       ? new Date(dateStr).toLocaleDateString('en-US', {
@@ -75,6 +116,8 @@ const MyBookings = () => {
         })
       : 'N/A';
 
+=======
+>>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
   return (
     <div className="flex flex-col mt-20 py-10 px-4 md:px-16 lg:px-24 xl:px-32">
       <Title
@@ -84,15 +127,25 @@ const MyBookings = () => {
       />
 
       <div className="max-w-full mt-8 w-full text-gray-800">
+<<<<<<< HEAD
+=======
+        {/* Table Header */}
+>>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
         <div className="hidden md:grid md:grid-cols-[3fr_2fr_1fr] w-full border-b border-gray-300 font-medium text-lg py-3">
           <div>Hotels</div>
           <div>Date & Timings</div>
           <div>Payment</div>
         </div>
+<<<<<<< HEAD
         {loading && (
           <p className="text-center text-gray-500 mt-10 animate-pulse">Loading bookings...</p>
         )}
         {!loading && bookings.length === 0 ? (
+=======
+
+        {/* Booking Entries */}
+        {bookings.length === 0 ? (
+>>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
           <p className="mt-10 text-gray-600">No bookings found.</p>
         ) : (
           bookings.map((booking, index) => (
@@ -100,6 +153,10 @@ const MyBookings = () => {
               key={index}
               className="grid grid-cols-1 md:grid-cols-[3fr_2fr_1fr] gap-6 md:gap-4 items-start border-b border-gray-200 py-6 text-base"
             >
+<<<<<<< HEAD
+=======
+              {/* Hotel Info */}
+>>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
               <div className="flex gap-4">
                 <img
                   src={booking.room?.images?.[0] || assets.placeholder}
@@ -128,16 +185,37 @@ const MyBookings = () => {
                 <p>
                   Check-in:{' '}
                   <span className="text-gray-900 font-semibold">
+<<<<<<< HEAD
                     {formatDate(booking.checkInDate)}
+=======
+                    {new Date(booking.checkInDate).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+>>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
                   </span>
                 </p>
                 <p>
                   Check-out:{' '}
                   <span className="text-gray-900 font-semibold">
+<<<<<<< HEAD
                     {formatDate(booking.checkOutDate)}
                   </span>
                 </p>
               </div>
+=======
+                    {new Date(booking.checkOutDate).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </span>
+                </p>
+              </div>
+
+              {/* Payment */}
+>>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
               <div className="flex flex-col items-start gap-2">
                 <div className="flex items-center gap-2">
                   <div
@@ -154,10 +232,14 @@ const MyBookings = () => {
                   </p>
                 </div>
                 {!booking.isPaid && (
+<<<<<<< HEAD
                   <button
                     onClick={() => handleBookingspayment(booking._id)}
                     className="bg-gray-800 text-white rounded-full px-5 py-2 hover:bg-gray-900 transition-all"
                   >
+=======
+                  <button onClick={()=>handleBookingspayment(booking._id)} className="bg-gray-300 text-white rounded-full px-5 py-2 hover:bg-gray-800 transition-all">
+>>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
                     Pay Now
                   </button>
                 )}

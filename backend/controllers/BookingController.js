@@ -199,16 +199,32 @@ export const getHotelBooking = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
 export const stripePayment = async (req, res) => {
   const { bookingId } = req.body;
 
   try {
     // Fetch booking details
     const booking = await Booking.findById(bookingId);
+<<<<<<< HEAD
     if (!booking) {
       return res.status(404).json({ success: false, message: 'Booking not found' });
     }
 
+=======
+   
+    if (!booking) {
+      return res.status(404).json({ success: false, message: 'Booking not found' });
+    }
+     booking.isPaid = !booking.isPaid;
+     booking.status = 'completed'
+     booking.save();
+>>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
     // Fetch room and associated hotel
     const roomData = await Room.findById(booking.room).populate('hotel');
     if (!roomData || !roomData.hotel) {
@@ -237,13 +253,20 @@ export const stripePayment = async (req, res) => {
     const session = await stripe.checkout.sessions.create({
       line_items,
       success_url: `${origin}/loader/my-booking`,
+<<<<<<< HEAD
       cancel_url: `${origin}/my-bookings`,
+=======
+      cancel_url: `${origin}/my-booking`,
+>>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
       mode: "payment",
       metadata: {
         bookingId,
       },
     });
+<<<<<<< HEAD
 
+=======
+>>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
     res.json({ success: true, url: session.url });
   } catch (error) {
     console.error("Stripe payment error:", error);

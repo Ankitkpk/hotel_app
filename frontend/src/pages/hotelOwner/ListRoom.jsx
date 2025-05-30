@@ -23,8 +23,15 @@ const ListRoom = () => {
     }
   };
 
+<<<<<<< HEAD
   const ToggleRoom = async (roomId) => {
     try {
+=======
+  // Toggle-room-availability
+  const ToggleRoom = async (roomId) => {
+    try {
+      console.log(roomId);
+>>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
       const token = await getToken();
       const { data } = await axios.post(
         '/api/rooms/toggle-Availability',
@@ -62,11 +69,16 @@ const ListRoom = () => {
         title="Room Listings"
         subtitle="View, edit, delete and manage all listed rooms and keep the information up to date to enhance user experience."
       />
+<<<<<<< HEAD
 
       <p className="mt-6 mb-2 text-gray-700 font-semibold">All Rooms</p>
 
       {/* Table view for larger screens */}
       <div className="hidden sm:block w-full max-w-5xl text-left border border-gray-300 rounded-lg max-h-[26rem] overflow-y-scroll overflow-x-auto mt-4">
+=======
+      <p className="mt-6 mb-2 text-gray-700 font-semibold">All Rooms</p>
+      <div className="w-full max-w-5xl text-left border border-gray-300 rounded-lg max-h-[26rem] overflow-y-scroll overflow-x-auto mt-4">
+>>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
         <table className="w-full min-w-[700px]">
           <thead className="bg-gray-50">
             <tr>
@@ -100,6 +112,7 @@ const ListRoom = () => {
           </tbody>
         </table>
       </div>
+<<<<<<< HEAD
 
       {/* Card view for smaller screens */}
       <div className="sm:hidden flex flex-col gap-4 mt-4">
@@ -125,6 +138,8 @@ const ListRoom = () => {
           </div>
         ))}
       </div>
+=======
+>>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
     </div>
   );
 };
