@@ -236,7 +236,7 @@ export const stripePayment = async (req, res) => {
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       line_items,
-      success_url: `${origin}/loader/my-bookings`,
+      success_url: `${origin}/loader/my-booking`,
       cancel_url: `${origin}/my-bookings`,
       mode: "payment",
       metadata: {

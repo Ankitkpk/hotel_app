@@ -83,7 +83,7 @@ const Addroom = () => {
 
   return (
     <>
-      <form onSubmit={onSubmithandler} className="px-4 sm:px-6 lg:px-8 py-6">
+      <form onSubmit={onSubmithandler} className="px-4 sm:px-6 lg:px-8 py-6 pb-16 sm:pb-20 lg:pb-24 sm:h-1/2">
         <Title
           align="left"
           font="outfit"

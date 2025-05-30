@@ -7,8 +7,10 @@ import toast from 'react-hot-toast';
 const MyBookings = () => {
   const { getToken, axios, user } = useContext(AppContext);
   const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchMyBookings = async () => {
+    setLoading(true);
     try {
       const token = await getToken();
       const response = await axios.get('/api/booking/getbookings', {
@@ -16,8 +18,8 @@ const MyBookings = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      
-      console.log(`booking data response is ${response}`);
+
+      console.log('booking data response is', response);
 
       if (response.data?.success) {
         setBookings(response.data.bookings || []);
@@ -28,38 +30,50 @@ const MyBookings = () => {
     } catch (error) {
       console.error('Fetch Bookings Error:', error);
       toast.error('Something went wrong while fetching bookings.');
+    } finally {
+      setLoading(false);
     }
   };
-//handle bookings//
-const handleBookingspayment = async (bookingId) => {
-  try {
-    const token = await getToken();
 
-    const { data } = await axios.post(
-      '/api/booking/stripe-payment',
-      { bookingId },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+  const handleBookingspayment = async (bookingId) => {
+    try {
+      const token = await getToken();
+
+      const { data } = await axios.post(
+        '/api/booking/stripe-payment',
+        { bookingId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (data.success) {
+        window.location.href = data.url;
+      } else {
+        toast.error(data.message);
       }
-    );
-    if(data.success){
-      window.location.href=data.url
-    }else
-    {
-       toast.error(data.message);
+    } catch (error) {
+      toast.error(error.message || 'Payment failed');
+      console.error('Error creating Stripe payment:', error);
     }
-  } catch (error) {
-    toast.error(error.message);
-    console.error("Error creating Stripe payment:", error);
-  }
-};
+  };
+
   useEffect(() => {
     if (user) {
       fetchMyBookings();
     }
   }, [user]);
+
+  const formatDate = (dateStr) =>
+    dateStr
+      ? new Date(dateStr).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      : 'N/A';
 
   return (
     <div className="flex flex-col mt-20 py-10 px-4 md:px-16 lg:px-24 xl:px-32">
@@ -70,15 +84,15 @@ const handleBookingspayment = async (bookingId) => {
       />
 
       <div className="max-w-full mt-8 w-full text-gray-800">
-        {/* Table Header */}
         <div className="hidden md:grid md:grid-cols-[3fr_2fr_1fr] w-full border-b border-gray-300 font-medium text-lg py-3">
           <div>Hotels</div>
           <div>Date & Timings</div>
           <div>Payment</div>
         </div>
-
-        {/* Booking Entries */}
-        {bookings.length === 0 ? (
+        {loading && (
+          <p className="text-center text-gray-500 mt-10 animate-pulse">Loading bookings...</p>
+        )}
+        {!loading && bookings.length === 0 ? (
           <p className="mt-10 text-gray-600">No bookings found.</p>
         ) : (
           bookings.map((booking, index) => (
@@ -86,7 +100,6 @@ const handleBookingspayment = async (bookingId) => {
               key={index}
               className="grid grid-cols-1 md:grid-cols-[3fr_2fr_1fr] gap-6 md:gap-4 items-start border-b border-gray-200 py-6 text-base"
             >
-              {/* Hotel Info */}
               <div className="flex gap-4">
                 <img
                   src={booking.room?.images?.[0] || assets.placeholder}
@@ -115,26 +128,16 @@ const handleBookingspayment = async (bookingId) => {
                 <p>
                   Check-in:{' '}
                   <span className="text-gray-900 font-semibold">
-                    {new Date(booking.checkInDate).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
+                    {formatDate(booking.checkInDate)}
                   </span>
                 </p>
                 <p>
                   Check-out:{' '}
                   <span className="text-gray-900 font-semibold">
-                    {new Date(booking.checkOutDate).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
+                    {formatDate(booking.checkOutDate)}
                   </span>
                 </p>
               </div>
-
-              {/* Payment */}
               <div className="flex flex-col items-start gap-2">
                 <div className="flex items-center gap-2">
                   <div
@@ -151,7 +154,10 @@ const handleBookingspayment = async (bookingId) => {
                   </p>
                 </div>
                 {!booking.isPaid && (
-                  <button onClick={()=>handleBookingspayment(booking._id)} className="bg-gray-300 text-white rounded-full px-5 py-2 hover:bg-gray-800 transition-all">
+                  <button
+                    onClick={() => handleBookingspayment(booking._id)}
+                    className="bg-gray-800 text-white rounded-full px-5 py-2 hover:bg-gray-900 transition-all"
+                  >
                     Pay Now
                   </button>
                 )}

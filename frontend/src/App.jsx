@@ -22,6 +22,7 @@ import Loader from './components/Loader.jsx';
 function AppContent() {
   const location = useLocation();
   const isOwnerPath = location.pathname.includes('owner');
+  const isAddroomPath=location.pathname.includes('add-room')
   const {showHotelReg}=useContext(AppContext);
   return (
     <div>
@@ -41,7 +42,8 @@ function AppContent() {
      <Route path="list-room" element={<ListRoom/>} />
      </Route>
       </Routes>
-      <Footer/>
+      {!isAddroomPath &&<Footer/>}
+    
       </div>
       
     </div>
