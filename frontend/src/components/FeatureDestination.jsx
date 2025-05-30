@@ -1,20 +1,15 @@
 import React from 'react';
 import HotelCard from './HotelCard';
 import Title from './Title';
-<<<<<<< HEAD
 import { useNavigate } from 'react-router';
-=======
->>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
+
 import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 
 const FeatureDestination = () => {
-<<<<<<< HEAD
+
   const {roomdata,navidate}=useContext(AppContext);
-=======
-  const {roomdata,navigate}=useContext(AppContext);
->>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
-  
+
   console.log(roomdata);
 
   return roomdata.length > 0 && (

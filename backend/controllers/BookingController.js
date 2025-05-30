@@ -3,29 +3,28 @@ import Booking from '../models/Booking.js';
 import Hotel from '../models/Hotel.js';
 import Room from '../models/Room.js';
 import Stripe from 'stripe';
-//function to check availability of room//
+
+// Function to check availability of room
 const checkAvailability = async ({ checkInDate, checkOutDate, room }) => {
   try {
     const bookings = await Booking.find({
       room,
       checkInDate: { $lte: checkOutDate },
-      checkOutDate: { $gte: checkInDate }
+      checkOutDate: { $gte: checkInDate },
     });
-    const isAvailable=bookings.length === 0
-    return isAvailable
+    return bookings.length === 0;
   } catch (error) {
     console.error('Error checking availability:', error);
     return false;
   }
 };
 
-
-//CHECK FOR AVAILABLITY API/
-
+// API: Check room availability
 export const checkAvailabilityApi = async (req, res) => {
   const { checkInDate, checkOutDate, room } = req.body;
+
   if (!checkInDate || !checkOutDate || !room) {
-    return res.status(400).json({ message: "Missing required fields." });
+    return res.status(400).json({ message: 'Missing required fields.' });
   }
 
   try {
@@ -34,38 +33,28 @@ export const checkAvailabilityApi = async (req, res) => {
     return res.status(200).json({
       room,
       isAvailable,
-      message: isAvailable ? "Room is available" : "Room is not available"
+      message: isAvailable ? 'Room is available' : 'Room is not available',
     });
   } catch (error) {
-    console.error("Error in checkAvailabilityApi:", error);
-    return res.status(500).json({ message: "Server error", error: error.message });
+    console.error('Error in checkAvailabilityApi:', error);
+    return res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
-//API TO create new Bookings//
-
-
-
-
+// API: Create new booking
 export const createBookings = async (req, res) => {
   try {
-    const {
-      room,
-      checkInDate,
-      checkOutDate,
-      guests,
-    } = req.body;
+    const { room, checkInDate, checkOutDate, guests } = req.body;
 
-    // 1. Validate required fields
+    // Validate required fields
     if (!room || !checkInDate || !checkOutDate || !guests) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
     const user = req.user._id; // assumes authentication middleware sets req.user
 
-    // 2. Check if room is available
+    // Check room availability
     const isAvailable = await checkAvailability({ checkInDate, checkOutDate, room });
-
     if (!isAvailable) {
       return res.status(400).json({
         success: false,
@@ -73,24 +62,19 @@ export const createBookings = async (req, res) => {
       });
     }
 
-    // 3. Get room data & calculate price
+    // Get room data and calculate price
     const roomData = await Room.findById(room).populate('hotel');
-
     if (!roomData) {
       return res.status(404).json({ message: 'Room not found' });
     }
 
     const pricePerNight = roomData.pricePerNight;
-
     const checkIn = new Date(checkInDate);
     const checkOut = new Date(checkOutDate);
-
-    const timeDiff = checkOut - checkIn;
-    const nights = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
+    const nights = Math.ceil((checkOut - checkIn) / (1000 * 3600 * 24));
     const totalPrice = pricePerNight * nights;
 
-    // 4. Create booking
+    // Create booking
     const newBooking = await Booking.create({
       user,
       room,
@@ -100,28 +84,31 @@ export const createBookings = async (req, res) => {
       guests: +guests,
       totalPrice,
     });
-    console.log(req.user.email);
-     const mailOptions={
-      from:process.env.SMTP_EMAIL,
-      to:req.user.email,
-      subject:'Hotel Booking details',
+
+    // Send booking confirmation email
+    const mailOptions = {
+      from: process.env.SMTP_EMAIL,
+      to: req.user.email,
+      subject: 'Hotel Booking Details',
       html: `
-      <h2>Your Booking Details</h2> 
-      <p>Dear ${req.user.name},</p>
-      <p>Thank you for booking with us! Below are your booking details:</p>
-      <ul>
-      <li><strong>Booking Id:</strong> ${newBooking._id}</li>
-      <li><strong>Hotel Name:</strong> ${roomData.hotel.name}</li>
-      <li><strong>Location:</strong> ${roomData.hotel.address}</li>
-      <li><strong>Check-in:</strong> ${new Date(checkInDate).toLocaleDateString()}</li>
-      <li><strong>Check-out:</strong> ${new Date(checkOutDate).toLocaleDateString()}</li>
-      <li><strong>Amount:</strong> $${totalPrice}</li>
-      <p>we look forward to welcomming you</p>
-      <p>if you need chnages feel free to contact use</p>
-     </ul>
-     `,
-     }
-     await transporter.sendMail(mailOptions);
+        <h2>Your Booking Details</h2>
+        <p>Dear ${req.user.name},</p>
+        <p>Thank you for booking with us! Below are your booking details:</p>
+        <ul>
+          <li><strong>Booking Id:</strong> ${newBooking._id}</li>
+          <li><strong>Hotel Name:</strong> ${roomData.hotel.name}</li>
+          <li><strong>Location:</strong> ${roomData.hotel.address}</li>
+          <li><strong>Check-in:</strong> ${new Date(checkInDate).toLocaleDateString()}</li>
+          <li><strong>Check-out:</strong> ${new Date(checkOutDate).toLocaleDateString()}</li>
+          <li><strong>Amount:</strong> $${totalPrice}</li>
+        </ul>
+        <p>We look forward to welcoming you!</p>
+        <p>If you need changes, feel free to contact us.</p>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+
     return res.status(201).json({
       message: 'Booking created successfully',
       booking: newBooking,
@@ -135,24 +122,24 @@ export const createBookings = async (req, res) => {
   }
 };
 
-//API TO GET ALL BOOKINGS FOR USER//
+// API: Get all bookings for the logged-in user
 export const userBookings = async (req, res) => {
-  const user = req.user._id; 
+  const user = req.user._id;
 
   try {
     const bookings = await Booking.find({ user })
       .populate('room')
       .populate('hotel')
-      .sort({ createdAt: -1 }); // latest bookings first
+      .sort({ createdAt: -1 });
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: 'User bookings fetched successfully',
       bookings,
     });
   } catch (error) {
     console.error('Error fetching user bookings:', error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: 'Internal server error',
       error: error.message,
@@ -160,13 +147,11 @@ export const userBookings = async (req, res) => {
   }
 };
 
-
-
-//get all bookings for hotel//
+// API: Get all bookings for the hotel owned by the logged-in user
 export const getHotelBooking = async (req, res) => {
   try {
-    // Find the single hotel owned by the logged-in user
-    const hotel = await Hotel.findOne({ owner:req.user._id });
+    // Find the hotel owned by the logged-in user
+    const hotel = await Hotel.findOne({ owner: req.user._id });
     if (!hotel) {
       return res.status(404).json({
         success: false,
@@ -180,8 +165,10 @@ export const getHotelBooking = async (req, res) => {
       .populate('room')
       .populate('hotel')
       .sort({ createdAt: -1 });
+
     const totalBookings = bookings.length;
     const totalRevenue = bookings.reduce((acc, booking) => acc + booking.totalPrice, 0);
+
     return res.status(200).json({
       success: true,
       message: 'Bookings fetched successfully',
@@ -191,7 +178,7 @@ export const getHotelBooking = async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching hotel bookings:', error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: 'Internal server error',
       error: error.message,
@@ -199,33 +186,21 @@ export const getHotelBooking = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
+// API: Stripe payment for booking
 export const stripePayment = async (req, res) => {
   const { bookingId } = req.body;
 
   try {
-    // Fetch booking details
     const booking = await Booking.findById(bookingId);
-<<<<<<< HEAD
     if (!booking) {
       return res.status(404).json({ success: false, message: 'Booking not found' });
     }
 
-=======
-   
-    if (!booking) {
-      return res.status(404).json({ success: false, message: 'Booking not found' });
-    }
-     booking.isPaid = !booking.isPaid;
-     booking.status = 'completed'
-     booking.save();
->>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
-    // Fetch room and associated hotel
+    // Mark booking as paid and update status
+    booking.isPaid = true;
+    booking.status = 'completed';
+    await booking.save();
+
     const roomData = await Room.findById(booking.room).populate('hotel');
     if (!roomData || !roomData.hotel) {
       return res.status(404).json({ success: false, message: 'Room or Hotel not found' });
@@ -233,13 +208,14 @@ export const stripePayment = async (req, res) => {
 
     const totalPrice = booking.totalPrice;
     const { origin } = req.headers;
-  //create a stripe instance //
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+    // Initialize Stripe
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
     const line_items = [
       {
         price_data: {
-          currency: "usd",
+          currency: 'usd',
           product_data: {
             name: roomData.hotel.name,
           },
@@ -251,28 +227,23 @@ export const stripePayment = async (req, res) => {
 
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
       line_items,
+      mode: 'payment',
       success_url: `${origin}/loader/my-booking`,
-<<<<<<< HEAD
-      cancel_url: `${origin}/my-bookings`,
-=======
       cancel_url: `${origin}/my-booking`,
->>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
-      mode: "payment",
       metadata: {
         bookingId,
       },
     });
-<<<<<<< HEAD
 
-=======
->>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
-    res.json({ success: true, url: session.url });
+    return res.json({ success: true, url: session.url });
   } catch (error) {
-    console.error("Stripe payment error:", error);
-    res.status(500).json({ success: false, message: "Payment processing failed", error: error.message });
+    console.error('Stripe payment error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Payment processing failed',
+      error: error.message,
+    });
   }
 };
-
-
-

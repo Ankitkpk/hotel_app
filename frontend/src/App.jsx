@@ -22,10 +22,7 @@ import Loader from './components/Loader.jsx';
 function AppContent() {
   const location = useLocation();
   const isOwnerPath = location.pathname.includes('owner');
-<<<<<<< HEAD
   const isAddroomPath=location.pathname.includes('add-room')
-=======
->>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
   const {showHotelReg}=useContext(AppContext);
   return (
     <div>
@@ -45,12 +42,7 @@ function AppContent() {
      <Route path="list-room" element={<ListRoom/>} />
      </Route>
       </Routes>
-<<<<<<< HEAD
       {!isAddroomPath &&<Footer/>}
-    
-=======
-      <Footer/>
->>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
       </div>
       
     </div>

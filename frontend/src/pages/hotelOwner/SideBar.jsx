@@ -29,8 +29,5 @@ const SideBar = () => {
   )
 }
 
-<<<<<<< HEAD
 export default SideBar
-=======
-export default SideBar
->>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
+

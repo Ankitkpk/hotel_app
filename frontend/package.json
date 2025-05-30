@@ -13,10 +13,7 @@
     "@clerk/clerk-react": "^5.30.3",
     "axios": "^1.9.0",
     "bcryptjs": "^2.4.3",
-<<<<<<< HEAD
     "lucide-react": "^0.511.0",
-=======
->>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.0",

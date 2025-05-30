@@ -37,8 +37,5 @@ export const registerHotel = async (req, res) => {
       message: 'Internal server error',
     });
   }
-<<<<<<< HEAD
+
 };
-=======
-};
->>>>>>> a306ffc3d39097587de5a3f717cc08727c072888

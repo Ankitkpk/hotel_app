@@ -22,11 +22,8 @@ app.use(cors({
 
 connectDB();
 //stripe webhook//
-<<<<<<< HEAD
 app.post('/api/stripe', express.raw({ type: 'application/json' }),stripeWebhooks);
-=======
-app.post('/api/stripe', express.raw({ type: 'application/json' }), stripeWebhooks);
->>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
+
 // Clerk auth middleware
 app.use(clerkMiddleware());
 

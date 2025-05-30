@@ -23,15 +23,8 @@ const ListRoom = () => {
     }
   };
 
-<<<<<<< HEAD
-  const ToggleRoom = async (roomId) => {
+  const toggleRoom = async (roomId) => {
     try {
-=======
-  // Toggle-room-availability
-  const ToggleRoom = async (roomId) => {
-    try {
-      console.log(roomId);
->>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
       const token = await getToken();
       const { data } = await axios.post(
         '/api/rooms/toggle-Availability',
@@ -69,16 +62,11 @@ const ListRoom = () => {
         title="Room Listings"
         subtitle="View, edit, delete and manage all listed rooms and keep the information up to date to enhance user experience."
       />
-<<<<<<< HEAD
 
       <p className="mt-6 mb-2 text-gray-700 font-semibold">All Rooms</p>
 
       {/* Table view for larger screens */}
       <div className="hidden sm:block w-full max-w-5xl text-left border border-gray-300 rounded-lg max-h-[26rem] overflow-y-scroll overflow-x-auto mt-4">
-=======
-      <p className="mt-6 mb-2 text-gray-700 font-semibold">All Rooms</p>
-      <div className="w-full max-w-5xl text-left border border-gray-300 rounded-lg max-h-[26rem] overflow-y-scroll overflow-x-auto mt-4">
->>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
         <table className="w-full min-w-[700px]">
           <thead className="bg-gray-50">
             <tr>
@@ -100,7 +88,7 @@ const ListRoom = () => {
                       type="checkbox"
                       className="sr-only peer"
                       checked={item.isAvailable}
-                      onChange={() => ToggleRoom(item._id)}
+                      onChange={() => toggleRoom(item._id)}
                     />
                     <div className="w-12 h-7 bg-slate-300 rounded-full peer-checked:bg-blue-600 relative transition-colors duration-200">
                       <span className="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-5"></span>
@@ -112,15 +100,20 @@ const ListRoom = () => {
           </tbody>
         </table>
       </div>
-<<<<<<< HEAD
 
       {/* Card view for smaller screens */}
       <div className="sm:hidden flex flex-col gap-4 mt-4">
         {rooms.map((item) => (
           <div key={item._id} className="border border-gray-300 rounded-lg p-4 shadow-sm bg-white">
-            <p><span className="font-semibold text-gray-700">Room:</span> {item.roomType}</p>
-            <p><span className="font-semibold text-gray-700">Facilities:</span> {item.amenities.join(', ')}</p>
-            <p><span className="font-semibold text-gray-700">Price:</span> ₹{item.pricePerNight}</p>
+            <p>
+              <span className="font-semibold text-gray-700">Room:</span> {item.roomType}
+            </p>
+            <p>
+              <span className="font-semibold text-gray-700">Facilities:</span> {item.amenities.join(', ')}
+            </p>
+            <p>
+              <span className="font-semibold text-gray-700">Price:</span> ₹{item.pricePerNight}
+            </p>
             <div className="flex items-center gap-2 mt-2">
               <span className="font-semibold text-gray-700">Available:</span>
               <label className="relative inline-flex items-center cursor-pointer">
@@ -128,7 +121,7 @@ const ListRoom = () => {
                   type="checkbox"
                   className="sr-only peer"
                   checked={item.isAvailable}
-                  onChange={() => ToggleRoom(item._id)}
+                  onChange={() => toggleRoom(item._id)}
                 />
                 <div className="w-12 h-7 bg-slate-300 rounded-full peer-checked:bg-blue-600 relative transition-colors duration-200">
                   <span className="absolute left-1 top-1 w-5 h-5 bg-white rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-5"></span>
@@ -138,8 +131,6 @@ const ListRoom = () => {
           </div>
         ))}
       </div>
-=======
->>>>>>> a306ffc3d39097587de5a3f717cc08727c072888
     </div>
   );
 };
